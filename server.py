@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 from main import ExceptionThread
 from tokenizer import Tokenizer
 from vee_parser import Parser
-from evaluator import Evaluator, TimeoutException
+from evaluator import ClassEncoder, Evaluator, TimeoutException
 from compiler import Compiler
 
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def api_status():
     output = _evaluate(ast)
 
     return jsonify({
-        'output': output,
+        'output': json.loads(json.dumps(output, cls=ClassEncoder)),
     })
 
 

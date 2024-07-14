@@ -1,3 +1,4 @@
+import json
 import os
 import threading
 import time
@@ -29,6 +30,15 @@ class ClassInstance:
     def __repr__(self):
         data = ",".join(str(k)+"="+str(self.data[k]) for k in self.attribute_keys)
         return f'{self.class_name}[{data}]'
+
+class ClassEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ClassDef):
+            return str(obj)
+        if isinstance(obj, ClassInstance):
+            return str(obj)
+        return super().default(obj)
+
 
 class ReturnException(Exception):
     def __init__(self, value):
