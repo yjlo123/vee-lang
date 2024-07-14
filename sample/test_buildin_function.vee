@@ -1,0 +1,9 @@
+for i in 0..100 {
+    print('tick')
+    sleep(0.1)
+}
+
+/* test timeout */
+// while true {
+//     print('aa')
+// }

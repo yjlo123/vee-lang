@@ -1,10 +1,15 @@
 import os
+import threading
+import time
 from tokenizer import Token, TokenType, Tokenizer
 from vee_parser import Node, NodeType, Parser
 
 
 SELF_ASSIGN_OPERATORS = ['+=', '-=', '*=', '/=', '/.=', '%=']
 ASSIGN_OPERATORS = SELF_ASSIGN_OPERATORS + ['=']
+
+class TimeoutException(Exception):
+    pass
 
 class ClassDef:
     def __init__(self, name):
@@ -85,7 +90,8 @@ class Environment:
         print(">>>>", self._global, "|||||", self._cur_scope, "/////", self._frames)
 
 class Evaluator:
-    def __init__(self, src_file_name):
+    def __init__(self, src_file_name, out=None):
+        self._stop_event = threading.Event()
         self.src_file_name = src_file_name
         self.env = {
             'true': True,
@@ -93,6 +99,13 @@ class Evaluator:
             'nil': None,
         }
         self.frames = []
+        self.out = out
+
+    def stop(self):
+        self._stop_event.set()
+    
+    def should_stop(self):
+        return self._stop_event.is_set()
 
     def evaluate_basic_operator(self, token, left_val, right_val):
         match token.value:
@@ -146,6 +159,9 @@ class Evaluator:
                 raise SyntaxError(f'unhandled operator: {token}')
 
     def evaluate(self, ast, scope=None, forced_scope=False):
+        if self.should_stop():
+            raise TimeoutException("Evaluation was stopped due to timeout")
+
         node_type = ast.type
         token = ast.token
         children = ast.children
@@ -270,7 +286,12 @@ class Evaluator:
                 if children:
                     params = self.evaluate(children[0], scope)
                 if token.value == 'print':
-                    print(*params)
+                    if self.out is None:
+                        print(*params)
+                    else:
+                        self.out.append(params)
+                elif token.value == 'sleep':
+                    time.sleep(*params)
                 elif token.value == 'type':
                     return str(type(params[0]).__name__)
                 else:
