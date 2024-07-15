@@ -28,16 +28,14 @@ class NodeType(Enum):
     OPERATOR = 3
     IDENT = 4
     VALUE = 5
-    ARG = 6
-    FUNC_CALL = 7
-    FUNC_DEF = 8
-    ARG_LIST = 9
-    FOR = 11
-    WHILE = 12
-    IF = 13
-    ELSE = 14
-    RETURN = 15
-    CLASS = 16
+    FUNC_CALL = 6
+    FUNC_DEF = 7
+    ARG_LIST = 8
+    FOR = 9
+    WHILE = 10
+    IF = 11
+    RETURN = 12
+    CLASS = 13
 
 
 PRECEDENCE = {

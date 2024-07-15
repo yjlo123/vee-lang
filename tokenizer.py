@@ -8,7 +8,6 @@ class TokenType(Enum):
     NEL = 5    # newline
     SYM = 6    # symbol
     EOF = 99   # end of file
-    NON = 100  # none
 
 class Token:
     def __init__(self, value, type, line, column):
@@ -48,7 +47,7 @@ class Tokenizer:
 
     def add_current_token(self):
         if self.current:
-            type = TokenType.NON
+            type = None
             if self.current.isdigit():
                 type = TokenType.NUM
             elif self.current in KEY_WORDS:
