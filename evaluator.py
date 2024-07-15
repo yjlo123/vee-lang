@@ -141,6 +141,8 @@ class Evaluator:
                 return int(left_val) // int(right_val)
             case '%':
                 return int(left_val) % int(right_val)
+            case '**':
+                return int(left_val) ** int(right_val)
             case '<':
                 return float(left_val) < float(right_val)
             case '<=':
