@@ -26,32 +26,41 @@ class ExceptionThread(threading.Thread):
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='Vee programming language')
     arg_parser.add_argument('input_file', metavar='input_file', type=str, help='Source file')
+    arg_parser.add_argument('-t', '--tokens', action='store_true', help='print tokens')
+    arg_parser.add_argument('-a', '--ast', action='store_true', help='print AST')
+    arg_parser.add_argument('-e', '--evaluate', action='store_true', help='evaluate AST')
     arg_parser.add_argument('-c', dest='compiled_runtime_script', metavar='compiled_runtime_script', type=str, help='Compiled Runtime Script output file (optional)')
+    
     args = arg_parser.parse_args()
 
     with open(args.input_file, 'r') as src_file:
+        # Tokenization
         tokenzier = Tokenizer()
         tokens = tokenzier.tokenize(src_file.read())
-        # print_tokens(tokens)
+        if args.tokens:
+            print_tokens(tokens)
     
+        # Parsing
         parser = Parser(tokens)
         ast = parser.parse()
-        ast.pretty_print(indent='', is_last=True)
+        if args.ast:
+            ast.pretty_print(indent='', is_last=True)
 
-        evaluator = Evaluator(src_file.name)
+        # Evaluation
+        if args.evaluate:
+            evaluator = Evaluator(src_file.name)
+            try:
+                thread = ExceptionThread(target=lambda:evaluator.evaluate(ast))
+                thread.start()
+                thread.join(2) # 2 seconds timeout
 
-        try:
-            thread = ExceptionThread(target=lambda:evaluator.evaluate(ast))
-            thread.start()
-            thread.join(2) # 2 seconds timeout
+                if thread.is_alive():
+                    evaluator.stop()
+                    thread.join()
+            except TimeoutException as e:
+                print('>>>', e)
 
-            if thread.is_alive():
-                evaluator.stop()
-                thread.join()
-        except TimeoutException as e:
-            print('>>>', e)
-
-
+        # Compiling to Runtime Script
         if args.compiled_runtime_script:
             with open(args.compiled_runtime_script, 'w') as compiled_output_file:
                 compiler = Compiler(src_file.name)

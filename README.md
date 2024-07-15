@@ -4,12 +4,15 @@ The Vee programming language
 [Playground](https://siwei.dev/test/vee/)
 
 ## Usage
-- Parse input file
-- Print AST
-- Evaluate AST
-- Compile to Runtime Script
+- `<input_file>`
+- `-t` Print tokens
+- `-a` Print AST
+- `-e` Evaluate AST
+- `-c <output_runtime_script_file>` Compile to Runtime Script
+
+Example:
 ```
-python3 main.py <input_file> -c <output_runtime_script_file>
+python3 main.py sample.vee -e -c out.runtime
 ```
 
 ## AST
