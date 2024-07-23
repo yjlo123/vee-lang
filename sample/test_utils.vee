@@ -1,5 +1,3 @@
-
-
 class TestSet {
     name = ''
     total = 0
@@ -43,29 +41,9 @@ class TestSet {
 
     func print_summary() {
         title = 'Test results for ' + this.name
-        print(title)
         print('=' * title.len)
+        print(title)
         print(this.pass + '/' + this.total)
+        print('=' * title.len)
     }
 }
-
-ts = TestSet('Operators')
-ts.assert_equal(1+3, 4)
-ts.assert_equal(1+3+8, 12)
-ts.assert_equal(1-3, -2)
-ts.assert_equal(1+3-4, 0)
-ts.assert_equal(4*9.5, 38)
-ts.assert_equal(1/4, 0)
-ts.assert_equal(1/.4, 0.25)
-
-ts.assert_true(2 == 2)
-ts.print_summary()
-
-
-// func assert_equal(value, expected) {
-//     return if value == expected { true } else { false }
-// }
-
-// assert_equal(2**3, 8)
-
-// print(res)

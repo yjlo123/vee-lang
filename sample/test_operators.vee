@@ -1,0 +1,27 @@
+import test_utils.TestSet
+
+ts1 = TestSet('Arithmatics')
+
+ts1.assert_equal(1+3, 4)
+ts1.assert_equal(1+3+8, 12)
+ts1.assert_equal(1-3, -2)
+ts1.assert_equal(1+3-4, 0)
+
+ts1.assert_equal(4*9.5, 38)
+ts1.assert_equal(1/4, 0)
+ts1.assert_equal(9/2/3, 1)
+ts1.assert_equal(1/.4, 0.25)
+ts1.assert_equal(3*4/2, 6)
+
+ts1.assert_equal(2+4*2, 10)
+
+ts1.assert_equal(2**3, 8)
+
+ts1.print_summary()
+
+
+ts2 = TestSet('Logical')
+ts2.assert_true(2 == 2)
+
+ts2.print_summary()
+
