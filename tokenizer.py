@@ -113,6 +113,8 @@ class Tokenizer:
             elif c == '/':
                 # new comment
                 comment = '?'
+                self.add_current_token()
+                self.current = ''
                 continue
 
             if operator is not None:

@@ -29,7 +29,7 @@ if __name__ == "__main__":
     arg_parser.add_argument('-t', '--tokens', action='store_true', help='print tokens')
     arg_parser.add_argument('-a', '--ast', action='store_true', help='print AST')
     arg_parser.add_argument('-e', '--evaluate', action='store_true', help='evaluate AST')
-    arg_parser.add_argument('-c', dest='compiled_runtime_script', metavar='compiled_runtime_script', type=str, help='Compiled Runtime Script output file (optional)')
+    arg_parser.add_argument('-c', dest='compiled_runtime_script', metavar='compiled_runtime_script', type=str, help='compile to Runtime Script source file')
     
     args = arg_parser.parse_args()
 

@@ -133,8 +133,11 @@ class Evaluator:
                 result = float(left_val) - float(right_val)
                 return int(result) if result.is_integer() else result
             case '*':
-                result = float(left_val) * float(right_val)
-                return int(result) if result.is_integer() else result
+                if type(left_val) is str:
+                    return left_val * int(right_val)
+                else:
+                    result = float(left_val) * float(right_val)
+                    return int(result) if result.is_integer() else result
             case '/.':
                 return float(left_val) / float(right_val)
             case '/':
@@ -430,6 +433,7 @@ class Evaluator:
         frame = {}
         for i, arg in enumerate(args):
             if i >= len(params):
+                # use default vavlue
                 frame[arg.token.value] = self.evaluate(arg.children[0], scope=instance.data)
             else:
                 frame[arg.token.value] = params[i]
