@@ -6,7 +6,7 @@ from tokenizer import Token, TokenType, Tokenizer
 from vee_parser import Node, NodeType, Parser
 
 
-SELF_ASSIGN_OPERATORS = ['+=', '-=', '*=', '/=', '/.=', '%=']
+SELF_ASSIGN_OPERATORS = ['+=', '-=', '*=', '/=', '/.=', '%=', '**=']
 ASSIGN_OPERATORS = SELF_ASSIGN_OPERATORS + ['=']
 
 class TimeoutException(Exception):
@@ -17,7 +17,7 @@ class ClassDef:
         self.name = name
         self.attributes = {}
         self.methods = {}
-    
+
     def __repr__(self):
         return f'ClassDef-{self.name}'
 
@@ -26,7 +26,7 @@ class ClassInstance:
         self.class_name = class_def.name
         self.attribute_keys = class_def.attributes.keys()
         self.data = {}
-    
+
     def __repr__(self):
         data = ",".join(str(k)+"="+str(self.data[k]) for k in self.attribute_keys)
         return f'{self.class_name}[{data}]'
@@ -69,13 +69,13 @@ class Environment:
             msg = f'Undefined variable `{name}`' + (f' at {token.line}:{token.column}' if token else '')
             raise Exception(msg)
         return self._global[name]
-    
+
     def set_global(self, name, value):
         self._global[name] = value
 
     def _present_in_frame(self, name):
         return len(self._frames) > 0 and name in self._frames[-1]
-    
+
     def _present_in_scope(self, name):
         return self._cur_scope is not None and name in self._cur_scope
 
@@ -95,7 +95,7 @@ class Environment:
         else:
             # global
             self._global[name] = value
-    
+
     def print_env(self):
         print(">>>>", self._global, "|||||", self._cur_scope, "/////", self._frames)
 
@@ -113,7 +113,7 @@ class Evaluator:
 
     def stop(self):
         self._stop_event.set()
-    
+
     def should_stop(self):
         return self._stop_event.is_set()
 
