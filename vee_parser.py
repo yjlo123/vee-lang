@@ -46,6 +46,7 @@ PRECEDENCE = {
     '/=': 0,
     '/.=': 0,
     '%=': 0,
+    '**=': 0,
 
     '=>': 1,
 
@@ -233,7 +234,7 @@ class Parser:
         block = self.parse_stmt_list()
         self.consume(value='}')
         return block
-    
+
     def parse_arg(self):
         arg_token = self.consume(type=TokenType.IDN)
         arg_node = Node(NodeType.IDENT, arg_token)

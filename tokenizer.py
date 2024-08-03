@@ -30,7 +30,7 @@ MULTI_CHAR_OPERATORS = {
     '!': {'!='},
     '+': {'+=', '++'},
     '-': {'-=', '--'},
-    '*': {'*=', '**'},
+    '*': {'*=', '**', '**='},
     '/': {'/=', '/.', '/.='},
     '%': {'%='},
     '&': {'&&'},
@@ -126,7 +126,7 @@ class Tokenizer:
                 self.add_token(self.current, TokenType.SYM)
                 self.current = ''
                 operator = None
-                    
+
             if c in [' ', '\t', '\n', '\r']:
                 self.add_current_token()
                 self.column += 1
