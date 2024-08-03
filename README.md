@@ -63,3 +63,42 @@ TypeType = Enum{
     EOF: end of file
 }
 ```
+
+### Examples
+#### Identity
+```
+Node{
+    type: IDENT
+    token: Token{
+        value: 'my_var'
+        type: IDN
+    }
+    children: []
+}
+```
+#### Value
+```
+Node{
+    type: VALUE
+    token: Token{
+        value: 24
+        type: NUM
+    }
+    children: []
+}
+```
+
+#### Operator
+```
+Node{
+    type: OPERATOR
+    token: Token{
+        value: '+'
+        type: SYM
+    }
+    children: [
+        Node{<operand>},
+        Node{<operand>}
+    ]
+}
+```
