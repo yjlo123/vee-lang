@@ -3,16 +3,14 @@ import test_utils.TestSet
 func test_list_basic() {
 	ts = TestSet('List (basic)')
 
-    list = []
-    ts.assert_equal(list.len, 0)
-
     list = [1, 2, 3]
-    ts.assert_equal(list.len, 3)
-
+    // indexing
     ts.assert_equal(list[2], 3)
 
+    // get type
     ts.assert_equal(type(list), 'list')
 
+    // update
     list[0] = 99
     ts.assert_equal(list[0], 99)
 
@@ -23,7 +21,12 @@ test_list_basic()
 func test_list_methods() {
 	ts = TestSet('List (methods)')
 
+    // length
+    list = []
+    ts.assert_equal(list.len, 0)
+
     list = [1, 2, 3]
+    ts.assert_equal(list.len, 3)
 
     // push
     list.push(4)
