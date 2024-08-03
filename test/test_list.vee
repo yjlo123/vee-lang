@@ -1,0 +1,44 @@
+import test_utils.TestSet
+
+func test_list_basic() {
+	ts = TestSet('List (basic)')
+
+    list = []
+    ts.assert_equal(list.len, 0)
+
+    list = [1, 2, 3]
+    ts.assert_equal(list.len, 3)
+
+    ts.assert_equal(list[2], 3)
+
+    ts.assert_equal(type(list), 'list')
+
+    list[0] = 99
+    ts.assert_equal(list[0], 99)
+
+	ts.print_summary()
+}
+test_list_basic()
+
+func test_list_methods() {
+	ts = TestSet('List (methods)')
+
+    list = [1, 2, 3]
+
+    // push
+    list.push(4)
+    ts.assert_equal(list.len, 4)
+    ts.assert_equal(list, [1, 2, 3, 4])
+
+    // pop
+    v = list.pop()
+    ts.assert_equal(v, 4)
+    ts.assert_equal(list, [1, 2, 3])
+
+    // concat
+    list2 = [777, 666, 55]
+    ts.assert_equal(list.concat(list2), [1, 2, 3, 777, 666, 55])
+
+	ts.print_summary()
+}
+test_list_methods()
