@@ -367,8 +367,15 @@ class Evaluator:
                 path = os.path.dirname(self.src_file_name)
                 # TODO import from multi level path
                 #      resolve dependencies
-                file_name = children[0].children[0].token.value + '.vee'
+                lib_name = children[0].children[0].token.value
                 value_name = children[0].children[1].token.value
+                if lib_name in ['stdlib']:
+                    # built in lib path
+                    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), lib_name)
+                    # class name must be the same as the file name
+                    file_name = value_name + '.vee'
+                else:
+                    file_name = lib_name + '.vee'
                 file_path = os.path.join(path, file_name)
                 with open(file_path, 'r') as src_file:
                     tokenizer = Tokenizer()
