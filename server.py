@@ -9,12 +9,16 @@ from evaluator import ClassEncoder, Evaluator, TimeoutException
 from compiler import Compiler
 
 app = Flask(__name__)
-
+VERSION = '0.1.1'
 API_BASE = '/api/vee'
 
 @app.route(API_BASE + '/')
 def hello():
     return "Hello World!"
+
+@app.route(API_BASE + '/info')
+def info():
+    return json.dumps({'version': VERSION})
 
 @app.route(API_BASE + '/health')
 def health():

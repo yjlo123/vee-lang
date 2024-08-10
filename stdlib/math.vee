@@ -1,9 +1,9 @@
-class Math {
-    func Max (a, b) {
+class math {
+    func max (a, b) {
         return if a > b { a } else { b }
     }
 
-    func Min (a, b) {
+    func min (a, b) {
         return if a < b { a } else { b }
     }
 }

@@ -2,7 +2,7 @@
     57. Insert Interval
     https://blog.siwei.dev/leetcode/57-insert-interval/
 */
-import stdlib.Math
+import stdlib.math
 
 func insert(intervals, newInterval) {
     s = newInterval[0]
@@ -15,8 +15,8 @@ func insert(intervals, newInterval) {
         } else if i[0] > e {
             right.push(i)
         } else {
-            s = Math.Min(s, i[0])
-            e = Math.Max(e, i[1])
+            s = math.min(s, i[0])
+            e = math.max(e, i[1])
         }
     }
     return left.concat([[s, e]]).concat(right)
