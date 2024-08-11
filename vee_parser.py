@@ -188,7 +188,16 @@ class Parser:
     def parse_atom(self):
         token = self.peek()
         if token.value in LIST_PAIR and token.value != '(':
-            return self.parse_expression_list(token.value)
+            node = self.parse_expression_list(token.value)
+            # check if it's getting value by index/key (TODO extract)
+            while self.peek_check('['):
+                idn_node = node
+                left = self.consume(type=TokenType.SYM, value='[')
+                node = Node(NodeType.OPERATOR, left)
+                node.children.append(idn_node)
+                node.children.append(self.parse_expression())  # index
+                self.consume(type=TokenType.SYM, value=']')
+            return node
         elif token.type == TokenType.SYM and token.value == '-':
             # unary operator
             token = self.consume()
@@ -203,7 +212,7 @@ class Parser:
                 args = self.parse_expression_list('(')
                 node = Node(NodeType.FUNC_CALL, token)
                 node.children.append(args)
-            # check if it's getting value by index/key
+            # check if it's getting value by index/key (TODO extract)
             else:
                 while self.peek_check('['):
                     idn_node = node
@@ -213,7 +222,19 @@ class Parser:
                     node.children.append(self.parse_expression())  # index
                     self.consume(type=TokenType.SYM, value=']')
             return node
-        elif token.type in (TokenType.STR, TokenType.NUM):
+        elif token.type == TokenType.STR:
+            token = self.consume()
+            node = Node(NodeType.VALUE, token)
+            # check if it's getting value by index/key (TODO extract)
+            while self.peek_check('['):
+                idn_node = node
+                left = self.consume(type=TokenType.SYM, value='[')
+                node = Node(NodeType.OPERATOR, left)
+                node.children.append(idn_node)
+                node.children.append(self.parse_expression())  # index
+                self.consume(type=TokenType.SYM, value=']')
+            return node
+        elif token.type == TokenType.NUM:
             token = self.consume()
             return Node(NodeType.VALUE, token)
         elif token.value == '(':

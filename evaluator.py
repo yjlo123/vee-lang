@@ -12,6 +12,9 @@ ASSIGN_OPERATORS = SELF_ASSIGN_OPERATORS + ['=']
 class TimeoutException(Exception):
     pass
 
+class EvaluationException(Exception):
+    pass
+
 class ClassDef:
     def __init__(self, name):
         self.name = name
@@ -67,7 +70,7 @@ class Environment:
             print('global: ', self._global.keys())
             print(' ===========')
             msg = f'Undefined variable `{name}`' + (f' at {token.line}:{token.column}' if token else '')
-            raise Exception(msg)
+            raise EvaluationException(msg)
         return self._global[name]
 
     def set_global(self, name, value):
@@ -162,12 +165,13 @@ class Evaluator:
                 return list(range(int(left_val), int(right_val)))
             case '[':
                 # indexing
-                if type(left_val) is list:
+                if type(left_val) in (list, str):
                     if int(right_val) >= len(left_val):
-                        raise Exception(f'Index out of range. Len:{len(left_val)} Index:{int(right_val)}')
+                        raise EvaluationException(f'Index out of range. Len:{len(left_val)} Index:{int(right_val)}')
                     return left_val[int(right_val)]
                 elif type(left_val) is dict:
                     return left_val.get(right_val)
+                raise EvaluationException(f'Unsupported indexing on type:{type(left_val)} value:{left_val}')
             case ':':
                 return (left_val, right_val)
             case _:
@@ -188,6 +192,24 @@ class Evaluator:
                         return float(token.value)
                     else:
                         return int(token.value)
+                elif token.type == TokenType.STR:
+                    original_string = token.value
+                    rest_left = 0
+                    parts = []
+                    # string interpolation
+                    while original_string.find('${', rest_left) >= 0:
+                        idx_left = original_string.find('${', rest_left)
+                        parts.append(original_string[rest_left:idx_left])
+                        idx_right = original_string.find('}', rest_left+2)
+                        if idx_right < 0:
+                            parts.append(original_string[idx_left:])
+                            rest_left = idx_left + 2
+                            break
+                        var_name = original_string[idx_left+2:idx_right]
+                        parts.append(env.get(var_name, token, forced_scope=forced_scope))
+                        rest_left = idx_right + 1
+                    parts.append(original_string[rest_left:])
+                    return ''.join(parts)
                 return token.value
             case NodeType.IDENT:
                 return env.get(token.value, token, forced_scope=forced_scope)
@@ -217,7 +239,7 @@ class Evaluator:
                         elif type(container) is dict:
                             container[left.children[1].token.value] = right_val
                         else:
-                            raise Exception(f'Value is not a container: {container}')
+                            raise EvaluationException(f'Value is not a container: {container}')
                     else:
                         env.set(left.token.value, right_val)
                 else:
@@ -387,7 +409,7 @@ class Evaluator:
                     evaluator.evaluate(ast)
                     self.env[value_name] = evaluator.env[value_name]
             case _:
-                raise Exception(f'Unknown AST node type {node_type}')
+                raise EvaluationException(f'Unknown AST node type {node_type}')
 
     def eval_class_def(self, ast):
         data = ClassDef(ast.children[0].token.value)

@@ -1,0 +1,14 @@
+greeting = 'Hello'
+names = ['yjlo', 'siwei']
+
+for name in names {
+    print('${greeting} ${name}!')
+}
+
+print('bye ${')
+
+for c in 'abc' {
+    print(c)
+}
+
+print('def'[2])
