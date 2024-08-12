@@ -34,20 +34,20 @@ Node = Object{
 ### Node Types
 ```
 NodeType = Enum{
-    IMPORT
-    EXPR_LIST
-    STMT_LIST
-    OPERATOR
-    IDENT
-    VALUE
-    FUNC_CALL
-    FUNC_DEF
-    ARG_LIST
-    FOR
-    WHILE
-    IF
-    RETURN
-    CLASS
+    IMPORT      import statement
+    EXPR_LIST   expression list
+    STMT_LIST   statement list
+    OPERATOR    operator
+    IDENT       identifier
+    VALUE       value
+    FUNC_CALL   function call
+    FUNC_DEF    function definition 
+    ARG_LIST    argument list
+    FOR         for loop
+    WHILE       while loop
+    IF          if expression
+    RETURN      return statement
+    CLASS       class definition
 }
 ```
 
@@ -65,7 +65,7 @@ TypeType = Enum{
 ```
 
 ### Examples
-#### Identity
+#### Identifier
 ```
 Node{
     type: IDENT
