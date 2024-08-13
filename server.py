@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 from main import ExceptionThread
 from tokenizer import Tokenizer
 from vee_parser import Parser
-from evaluator import ClassEncoder, Evaluator, TimeoutException
+from evaluator import ClassEncoder, Evaluator, TimeoutException, EvaluationException
 from compiler import Compiler
 
 app = Flask(__name__)
@@ -60,6 +60,8 @@ def _evaluate(ast):
             thread.join()
         return evaluator.out
     except TimeoutException as e:
+        return [[str(e)]]
+    except EvaluationException as e:
         return [[str(e)]]
 
 def _compile_to_runtime(ast, output_filename):
