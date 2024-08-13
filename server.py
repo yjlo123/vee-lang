@@ -59,9 +59,11 @@ def _evaluate(ast):
             evaluator.stop()
             thread.join()
         return evaluator.out
-    except TimeoutException as e:
-        return [[str(e)]]
-    except EvaluationException as e:
+    # except TimeoutException as e:
+    #     return [[str(e)]]
+    # except EvaluationException as e:
+    #     return [[str(e)]]
+    except Exception as e:
         return [[str(e)]]
 
 def _compile_to_runtime(ast, output_filename):
