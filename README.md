@@ -1,4 +1,4 @@
-# vee-lang
+# Vee lang
 The Vee programming language
 
 [Playground](https://siwei.dev/test/vee/)
@@ -8,7 +8,7 @@ The Vee programming language
 - `-t` Print tokens
 - `-a` Print AST
 - `-e` Evaluate AST
-- `-c <output_runtime_script_file>` Compile to Runtime Script
+- `-c <output_runtime_script_file>` Compile to [Runtime Script](https://github.com/yjlo123/runtime-script)
 
 Example:
 ```
