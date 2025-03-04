@@ -32,24 +32,24 @@ Node = Object{
 ```
 
 ### Node Types
-```
-NodeType = Enum{
-    IMPORT      import statement
-    EXPR_LIST   expression list
-    STMT_LIST   statement list
-    OPERATOR    operator
-    IDENT       identifier
-    VALUE       value
-    FUNC_CALL   function call
-    FUNC_DEF    function definition 
-    ARG_LIST    argument list
-    FOR         for loop
-    WHILE       while loop
-    IF          if expression
-    RETURN      return statement
-    CLASS       class definition
-}
-```
+
+| Node Name | Meaning |
+| -------- | ------- |
+|IMPORT | import statement |
+|EXPR_LIST | expression list |
+|STMT_LIST | statement list |
+|OPERATOR | operator |
+|[IDENT](#identifier) | identifier |
+|VALUE | value |
+|FUNC_CALL | function call |
+|FUNC_DEF | function definition  |
+|ARG_LIST | argument list |
+|FOR | for loop |
+|WHILE | while loop |
+|IF | if expression |
+|RETURN | return statement |
+|CLASS | class definition |
+
 
 ### Token Types
 ```
