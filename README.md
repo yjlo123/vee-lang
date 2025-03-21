@@ -38,9 +38,9 @@ Node = Object{
 |IMPORT | import statement |
 |EXPR_LIST | expression list |
 |STMT_LIST | statement list |
-|OPERATOR | operator |
+|[OPERATOR](#operator) | operator |
 |[IDENT](#identifier) | identifier |
-|VALUE | value |
+|[VALUE](#value) | value |
 |FUNC_CALL | function call |
 |FUNC_DEF | function definition  |
 |ARG_LIST | argument list |
@@ -65,6 +65,19 @@ TypeType = Enum{
 ```
 
 ### Examples
+#### Operator
+```
+Node{
+    type: OPERATOR
+    token: Token{
+        value: '+'
+        type: SYM
+    }
+    children: [
+        Node{<operand>},
+        Node{<operand>}
+    ]
+}
 #### Identifier
 ```
 Node{
@@ -88,17 +101,4 @@ Node{
 }
 ```
 
-#### Operator
-```
-Node{
-    type: OPERATOR
-    token: Token{
-        value: '+'
-        type: SYM
-    }
-    children: [
-        Node{<operand>},
-        Node{<operand>}
-    ]
-}
 ```
