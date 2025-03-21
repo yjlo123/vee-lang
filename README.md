@@ -78,6 +78,7 @@ Node{
         Node{<operand>}
     ]
 }
+```
 #### Identifier
 ```
 Node{
@@ -99,6 +100,4 @@ Node{
     }
     children: []
 }
-```
-
 ```
