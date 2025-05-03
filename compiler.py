@@ -315,7 +315,29 @@ class Compiler:
                 elif token.type == TokenType.IDN and token.value == 'false':
                     return 0
                 if token.type == TokenType.STR:
-                    return f"'{token.value}'"
+                    original_string = token.value
+                    rest_left = 0
+                    parts = []
+                    # string interpolation
+                    while original_string.find('${', rest_left) >= 0:
+                        idx_left = original_string.find('${', rest_left)
+                        parts.append(f"'{original_string[rest_left:idx_left]}'")
+                        idx_right = original_string.find('}', rest_left+2)
+                        if idx_right < 0:
+                            parts.append(f"'{original_string[idx_left:]}'")
+                            rest_left = idx_left + 2
+                            break
+                        var_name = original_string[idx_left+2:idx_right]
+                        parts.append('$' + var_name)
+                        rest_left = idx_right + 1
+                    parts.append(f"'{original_string[rest_left:]}'")
+                    if len(parts) == 1:
+                        return f"'{token.value}'"
+                    str_var = self.get_new_var()
+                    self.gen_let(str_var, parts[0])
+                    for i in range(1, len(parts)):
+                        self.gen_op('add', self.evaluated_identity(str_var), parts[i], str_var)
+                    return self.evaluated_identity(str_var)
                 elif token.type == TokenType.NUM:
                     if type(token.value) == int:
                         return token.value 

@@ -206,7 +206,7 @@ class Evaluator:
                             rest_left = idx_left + 2
                             break
                         var_name = original_string[idx_left+2:idx_right]
-                        parts.append(env.get(var_name, token, forced_scope=forced_scope))
+                        parts.append(str(env.get(var_name, token, forced_scope=forced_scope)))
                         rest_left = idx_right + 1
                     parts.append(original_string[rest_left:])
                     return ''.join(parts)
