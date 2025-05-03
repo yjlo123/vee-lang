@@ -1,0 +1,25 @@
+/*
+    566. Reshape the Matrix
+    https://blog.siwei.dev/leetcode/566-reshape-the-matrix/
+*/
+
+func matrixReshape(mat, r, c) {
+    print(mat)
+    if mat == nil || mat.len == 0 {
+        return mat
+    }
+    result = []
+    row = []
+    for mr in mat {
+        for num in mr {
+            row.push(num)
+            if row.len == c {
+                result.push(row)
+                row = []
+            }
+        }
+    }
+    return result
+}
+
+print(matrixReshape([[1, 2], [3, 4]], 1, 4))

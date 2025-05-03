@@ -40,6 +40,8 @@ class ClassEncoder(json.JSONEncoder):
             return str(obj)
         if isinstance(obj, ClassInstance):
             return str(obj)
+        if isinstance(obj, list):
+            return '[' + ', '.join(self.default(i) for i in obj) + ']'
         return super().default(obj)
 
 
@@ -326,7 +328,7 @@ class Evaluator:
                     if self.out is None:
                         print(*params)
                     else:
-                        self.out.append(params)
+                        self.out.append(' '.join(str(p) for p in params))
                 elif token.value == 'sleep':
                     time.sleep(*params)
                 elif token.value == 'type':
