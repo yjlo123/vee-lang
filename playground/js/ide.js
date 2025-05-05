@@ -41,9 +41,9 @@ for area in areas {
 
 const myLayout = new GoldenLayout(config, '#layoutContainer');
 
-
+// Empty Placeholder Component
 myLayout.registerComponent('placeholder', function(container, state) {
-  container.getElement().html('<div style="padding:20px; color:#777;">No open files. Use File → New to create one.</div>');
+  container.getElement().html('<div style="padding:20px; color:#777;">No open files.<br/>Click the above "New" button to add a new tab.<br/>Learn more about <a href="https://github.com/yjlo123/vee-lang" target="_blank">Vee programming language</a>.</div>');
 });
 
 // Editor Components
