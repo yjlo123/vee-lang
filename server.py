@@ -25,7 +25,7 @@ def health():
     return json.dumps({'status': 'ok'})
 
 @app.route(API_BASE + '/eval', methods=['POST'])
-def api_status():
+def api_eval():
     data = request.json['data']
     source = data['source']
     ast = _tokenize(source)
@@ -33,6 +33,17 @@ def api_status():
 
     return jsonify({
         'output': json.loads(json.dumps(output, cls=ClassEncoder)),
+    })
+
+@app.route(API_BASE + '/compile', methods=['POST'])
+def api_compile():
+    data = request.json['data']
+    source = data['source']
+    ast = _tokenize(source)
+    output = _evaluate(ast)
+
+    return jsonify({
+        'output': _compile_to_runtime(ast),
     })
 
 
@@ -66,13 +77,10 @@ def _evaluate(ast):
     except Exception as e:
         return [[str(e)]]
 
-def _compile_to_runtime(ast, output_filename):
-    with open(output_filename, 'w') as compiled_output_file:
-        compiler = Compiler('')
-        compiler.compile_ast(ast)
-        for line in compiler.get_linked_out():
-            #print(line)
-            compiled_output_file.write(line + '\n')
+def _compile_to_runtime(ast):
+    compiler = Compiler('')
+    compiler.compile_ast(ast)
+    return compiler.get_linked_out()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
