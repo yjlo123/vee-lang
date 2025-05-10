@@ -1,36 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Vee Playground</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/golden-layout/1.5.9/goldenlayout.min.js" integrity="sha256-NhJAZDfGgv4PiB+GVlSrPdh3uc75XXYSM4su8hgTchI=" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-base.css">
-  <link rel="stylesheet" href="https://golden-layout.com/files/latest/css/goldenlayout-dark-theme.css">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha256-9mbkOfVho3ZPXfM7W8sV2SndrGDuh7wuyLjtsWeTI1Q=" crossorigin="anonymous" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha256-t8GepnyPmw9t+foMh3mKNvcorqNHamSKtKRxxpUEgFI=" crossorigin="anonymous"></script>
-
-  
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vee Online IDE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="toolbar">
+        <div class="logo-container">
+            <div class="logo">V</div>
+            <span class="logo-title">Vee</span>
+        </div>
+        <button class="btn" id="newFile">
+            <i class="fas fa-file"></i>
+            New File
+        </button>
+        <button class="btn" id="runButton">
+            <i class="fas fa-play"></i>
+            Run
+        </button>
+        <button class="btn secondary" id="compileButton">
+            <i class="fas fa-cog"></i>
+            Compile
+        </button>
+    </div>
 
-<div id="topbar">
-  <div id="logo">🌟 Vee</div>
+    <div class="main-content">
+        <div class="editor-section">
+            <div class="editor-container">
+                <div class="tabs" id="tabs">
+                    <div class="tab home-tab">
+                        <span class="title">Home</span>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="tab active">
+                        <span class="title">HelloWorld.vee</span>
+                        <span class="close">&times;</span>
+                    </div>
+                </div>
+                <div class="editor" id="editor"></div>
+            </div>
+            <div class="compiled-pane" id="compiledPane">
+                <div class="compiled-pane-header">
+                    <div class="compiled-pane-title">
+                        <span>Compiled Code</span>
+                        <i class="fas fa-copy copy-button" title="Copy to clipboard"></i>
+                    </div>
+                    <span class="compiled-pane-close">&times;</span>
+                </div>
+                <div class="compiled-code" id="compiledCode"></div>
+            </div>
+        </div>
+        <div class="resize-handle" id="resizeHandle"></div>
+        <div class="output" id="output">Output will appear here...</div>
+    </div>
+    <div class="welcome-page" id="welcomePage">
+        <h1>Welcome to Vee Online IDE</h1>
+        <p>Start coding in Vee programming language right in your browser.</p>
+        <p>Learn more about <a href="https://github.com/yjlo123/vee-lang" target="_blank">Vee programming language</a>.</p>
+        
+        <!-- <div class="features">
+            <div class="feature">
+                <h2>Quick Start</h2>
+                <p>Click the "New File" button to create a new file and start coding.</p>
+            </div>
+            <div class="feature">
+                <h2>Run Code</h2>
+                <p>Use the "Run" button to execute your Vee code and see the output.</p>
+            </div>
+            <div class="feature">
+                <h2>Multiple Files</h2>
+                <p>Work with multiple files using tabs. Drag to reorder, double-click to rename.</p>
+            </div>
+        </div> -->
 
-  <button id="newFile">New</button>
-  <button id="runButton">Run</button>
-  <button id="compileButton">Compile</button>
-</div>
+        <div class="samples">
+            <h2 style="color: #fff; margin-bottom: 20px;">Sample Code</h2>
+            <div class="sample" data-code="areas = ['game', 'web', 'algorithm']
+for area in areas {
+    print('Hello, ${area} developers!')
+}">
+                <h2>Hello World</h2>
+                <p>A simple program that prints greetings to different types of developers.</p>
+            </div>
+            <div class="sample" data-code="func fibonacci(n) {
+    if n <= 1 {
+        return n
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2)
+}
 
-<div id="layoutContainer"></div>
+for i in 1..10 {
+    print('Fibonacci(', i ,') = ', fibonacci(i))
+}">
+                <h2>Fibonacci Sequence</h2>
+                <p>Calculate and print the first 10 numbers in the Fibonacci sequence using recursion.</p>
+            </div>
+            <div class="sample" data-code="class Person {
+    name = ''
+    age = 0
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/mode-typescript.js"></script>
+    func init(name) {
+        this.name = name
+    }
 
+    func greet() {
+        print('Hi ' + this.name)
+    }
+}
 
-<script src="js/ide.js"></script>
+john = Person('John')
 
+print(john.name)
+john.greet()
+
+john.age = 28
+print(john.age)
+">
+                <h2>Class Example</h2>
+                <p>A simple class implementation showing object-oriented programming in Vee.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/ide.js"></script>
 </body>
-</html>
+</html> 
