@@ -99,7 +99,7 @@ function createTab(title, content = '') {
         tab.classList.remove('drag-over');
         const draggingTab = document.querySelector('.dragging');
         if (draggingTab && draggingTab !== tab) {
-            const tabs = Array.from(document.querySelectorAll('.tab:not(.home-tab)'));
+            const tabs = Array.from(document.querySelectorAll('.tab'));
             const draggingIndex = tabs.indexOf(draggingTab);
             const dropIndex = tabs.indexOf(tab);
 
@@ -173,6 +173,7 @@ function closeTab(tab) {
 // Initialize the first tab with content
 const homeTab = document.querySelector('.home-tab');
 const initialTab = document.querySelector('.tab:not(.home-tab)');
+initialTab.draggable = true; // Make the initial tab draggable
 tabContents.set(initialTab, editor.getValue());
 activeTab = initialTab;
 
@@ -184,6 +185,47 @@ homeTab.addEventListener('click', () => {
 // Add event listeners to the initial tab
 initialTab.addEventListener('click', () => {
     setActiveTab(initialTab);
+});
+
+// Add drag and drop event listeners to initial tab
+initialTab.addEventListener('dragstart', (e) => {
+    initialTab.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', '');
+    e.dataTransfer.effectAllowed = 'move';
+});
+
+initialTab.addEventListener('dragend', () => {
+    initialTab.classList.remove('dragging');
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('drag-over'));
+});
+
+initialTab.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    const draggingTab = document.querySelector('.dragging');
+    if (draggingTab !== initialTab) {
+        initialTab.classList.add('drag-over');
+    }
+});
+
+initialTab.addEventListener('dragleave', () => {
+    initialTab.classList.remove('drag-over');
+});
+
+initialTab.addEventListener('drop', (e) => {
+    e.preventDefault();
+    initialTab.classList.remove('drag-over');
+    const draggingTab = document.querySelector('.dragging');
+    if (draggingTab && draggingTab !== initialTab) {
+        const tabs = Array.from(document.querySelectorAll('.tab'));
+        const draggingIndex = tabs.indexOf(draggingTab);
+        const dropIndex = tabs.indexOf(initialTab);
+
+        if (draggingIndex < dropIndex) {
+            initialTab.parentNode.insertBefore(draggingTab, initialTab.nextSibling);
+        } else {
+            initialTab.parentNode.insertBefore(draggingTab, initialTab);
+        }
+    }
 });
 
 initialTab.querySelector('.close').addEventListener('click', (e) => {
